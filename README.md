@@ -29,3 +29,5 @@ Python script for verifying and unlocking Navigo boats lock
 4. For deskstop: 
     
     If you installed the OS desktop version on the rbpi, you can connect an HDMI-to-miniHDMI cable to a screen and your rpbi. You can use it same as a computer, just connect a keyboard and mouse.
+
+5. Enable i2c https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/i2c_configuration.html#i2c-config

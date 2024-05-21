@@ -13,11 +13,6 @@ Dependencies:
 - RPi.GPIO library
 
 For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lanctots@gmail.com.
-
-------
-in the loop we'll need to  verify that the code is 6 digits with '#' at the end (for submit). Here are the logical conditions to verify code and sanity, we might want to export to another function for clearer code.
-
-* if a non-digit key is entered before we have 6 digits, print "invalid character, only digi
 """
 
 import RPi.GPIO as GPIO 
@@ -44,8 +39,8 @@ class Keypad:
         # Configure GPIO settings for the keypad
         GPIO.setwarnings(False)  # Disable GPIO warnings
         GPIO.setmode(GPIO.BCM)   # Use BCM GPIO numbering
-        GPIO.setup(self._rows_pins, GPIO.OUT, initial=GPIO.LOW)  # Set rows as output pins, initialize to LOW
-        GPIO.setup(self._cols_pins, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Set columns as input pins with pull-down resistor
+        GPIO.setup(self.__rows_pins, GPIO.OUT, initial=GPIO.LOW)  # Set rows as output pins, initialize to LOW
+        GPIO.setup(self.__cols_pins, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Set columns as input pins with pull-down resistor
         ### Explanations ###
         # - The rows of the keypad are configured as output pins because they will be driven HIGH or LOW to detect key presses.
         # - The columns of the keypad are configured as input pins with pull-down resistors to detect key presses when a row is activated.
