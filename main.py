@@ -114,7 +114,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                         sent=get_current_time(),
                         sender="raspberry_pi",
                         scope="navigo",
-                        code=entered_code,
+                        code=str(entered_code),
                         device_id=boat_id,  # Replace with your actual device ID
                         date=get_current_time()
                     )
