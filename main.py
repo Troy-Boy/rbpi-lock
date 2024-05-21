@@ -18,7 +18,7 @@ For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lancto
 
 from api import API
 from config import Config
-from credentials import get_api_key
+from credentials import get_api_key, get_boat_id
 from keypad import Keypad
 from typing import List
 
@@ -102,7 +102,7 @@ def display_entered_code(code: str):
     LCD1602.write(0, 0, 'Enter code:')
     LCD1602.write(0, 1, code)
 
-def loop(keypad: Keypad, api: API):
+def loop(keypad: Keypad, api: API, boat_id: str):
     """Main loop to read keypad input and validate via API."""
     entered_code = ''
     while True:
@@ -115,7 +115,7 @@ def loop(keypad: Keypad, api: API):
                         sender="raspberry_pi",
                         scope="navigo",
                         code=entered_code,
-                        device_id="HGC123",  # Replace with your actual device ID
+                        device_id=boat_id,  # Replace with your actual device ID
                         date=get_current_time()
                     )
                     submit_code(api, config)
@@ -134,16 +134,13 @@ def loop(keypad: Keypad, api: API):
 def main() -> None:
     try:
         api_key = get_api_key()
+        boat_id = get_boat_id()
         print("API key: ", api_key)
-
+        print("Boat ID: ", boat_id)
         api = API(api_key)
         keypad = setup_keypad()
         setup_lcd()
         loop(keypad, api)
-    # # Call the API
-    # result = api.post_request("https://rc.rely.market/booking/reservations/verifyAccessCode", {'code': access_code})
-    # print(result)
-    # break
     except KeyboardInterrupt:
         destroy()
 
