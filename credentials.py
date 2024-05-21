@@ -31,16 +31,34 @@ def get_api_key() -> str:
     except (KeyError, FileNotFoundError):
         print("No API key found in config.ini or config.ini not found.")
         api_key = input("Please enter your API key: ")
-        save_api_key(api_key)
+        save_value(value=api_key, section="API_KEY", name="api_key")
         return api_key
 
-def save_api_key(api_key: str) -> None:
-    """Save the API key to the configuration file.
+def save_value(value: str, section: str, name: str) -> None:
+    """Save the value to the configuration file.
     
     Args:
-        api_key (str): The API key to be saved.
+        value (str): The value to be saved.
+        section (str): The section of the value.
+        name (str): The name of the value.
     """
     config = configparser.ConfigParser()
-    config['API_KEYS'] = {'api_key': api_key}
+    config[section] = {name: value}
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
+
+def get_boat_id() -> str:
+    """Gets the boat id from the config.ini file
+
+    Returns:
+        str: the boat id
+    """
+    try:
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        return config['BOAT_IDS']['boat_id']
+    except (KeyError, FileNotFoundError):
+        print("No API key found in config.ini or config.ini not found.")
+        boat_id = input("Please enter your API key: ")
+        save_value(value=boat_id, section="BOAT_IDS", name="boat_id")
+        return boat_id
