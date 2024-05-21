@@ -62,7 +62,7 @@ def init(addr=None, bl=1):
 
 	i2c_list = i2c_scan()
 	print(f"i2c_list: {i2c_list}")
-
+	print("is i2c 3f in address list", '3f' in i2c_list)
 	if addr is None:
 		if '27' in i2c_list:
 			LCD_ADDR = 0x27
@@ -118,6 +118,6 @@ def write(x, y, str):
 		send_data(ord(chr))
 
 if __name__ == '__main__':
-	init(0x27, 1)
+	init(None, 1)
 	write(4, 0, 'Hello')
 	write(7, 1, 'world!')
