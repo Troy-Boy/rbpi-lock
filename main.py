@@ -71,12 +71,6 @@ def submit_code(api: API, config: Config):
         api (API): The API instance.
         code (str): The 6-digit access code.
     """
-    sent = get_current_time()
-    device_id = "HGC123"  # Replace with your actual device ID
-    sender = "raspberry_pi"
-    scope = "navigo"
-    date = get_current_time()
-
     result = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
     if result and result.get('status') == 'success':
         LCD1602.clear()
@@ -136,47 +130,6 @@ def loop(keypad: Keypad, api: API):
                 if len(entered_code) < 6:
                     entered_code += key
                     display_entered_code(entered_code)
-
-# def loop(keypad: Keypad, api: API):
-#     """Main loop to read keypad input and validate via API."""
-#     entered_code = ''
-#     while True:
-#         key = keypad.read()
-#         if key:
-#             if key == '#':  # Assuming '#' is used to submit the code
-#                 if len(entered_code) == 6 and entered_code.isdigit():
-#                     sent = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime())
-#                     device_id = "HGC123"  # Replace with your actual device ID
-#                     sender = "raspberry_pi"
-#                     scope = "navigo"
-#                     date = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime())
-
-#                     # TODO: change function name and send config object
-#                     result = api.verify_access_code(entered_code, device_id, sent, sender, scope, date)
-#                     if result and result.get('status') == 'success':
-#                         LCD1602.clear()
-#                         LCD1602.write(0, 0, "Access Granted")
-#                         # Add code to unlock the door
-#                         # TODO: code to unlock
-#                     else:
-#                         LCD1602.clear()
-#                         LCD1602.write(0, 0, "Access Denied")
-#                 else:
-#                     LCD1602.clear()
-#                     LCD1602.write(0, 0, "Invalid Code")
-#                     LCD1602.write(0, 0, "Code must be 6 digits, followed by '#'")
-#                 entered_code = ''  # Reset entered code
-#             elif key == '*':  # Assuming '*' is used to clear the input
-#                 entered_code = ''
-#                 LCD1602.clear()
-#                 LCD1602.write(0, 0, 'Enter 6-digit code')
-#                 LCD1602.write(0, 1, 'Then press #')
-#             else:
-#                 if len(entered_code) < 6:
-#                     entered_code += key
-#                     LCD1602.clear()
-#                     LCD1602.write(0, 0, 'Enter code:')
-#                     LCD1602.write(0, 1, entered_code)  # Display entered code
 
 def main() -> None:
     try:
