@@ -140,7 +140,7 @@ def main() -> None:
         api = API(api_key)
         keypad = setup_keypad()
         setup_lcd()
-        loop(keypad, api)
+        loop(keypad, api, boat_id=boat_id)
     except KeyboardInterrupt:
         destroy()
 
