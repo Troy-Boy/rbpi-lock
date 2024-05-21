@@ -69,7 +69,8 @@ def init(addr=None, bl=1):
 		elif '3f' in i2c_list:
 			LCD_ADDR = 0x3f
 		else:
-			raise IOError("I2C address 0x27 or 0x3f no found.")
+			# raise IOError("I2C address 0x27 or 0x3f no found.")
+			LCD_ADDR = 0x3f
 	else:
 		LCD_ADDR = addr
 		if str(hex(addr)).strip('0x') not in i2c_list:
