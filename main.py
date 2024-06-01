@@ -85,24 +85,24 @@ def get_current_time() -> str:
     return current_time
 
 
-def submit_code(api: API, config: Config):
+def submit_code(api: API, config: Config) -> int:
     """Submit the access code to the API and display the result on the LCD.
     
     Args:
         api (API): The API instance.
         code (str): The 6-digit access code.
+    Returns:
+        int: response https status.
     """
-    result = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
-    if result and result.get("status") == "success":
+    response = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
+    if response and response.status_code == 201:
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Granted")
-        # Add code to unlock the door
-        # TODO: code to unlock
     else:
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Denied")
         LCD1602.write(0, 1, "Press * to clear")
-    return result.get("status")
+    return response.status_code
 
 
 # def clear_input() -> str:
