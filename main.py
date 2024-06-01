@@ -64,7 +64,7 @@ def display_scrolling_message(message: str, row: int, delay: float):
     display = message + ' ' * lcd_width
 
     for i in range(len(display) - lcd_width + 1):
-        LCD1602.write(row, 0, display[i:i + lcd_width])
+        LCD1602.write(0, row, display[i:i + lcd_width])
         time.sleep(delay)
 
 
@@ -137,6 +137,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
     entered_code = ""
     scrolling = True
     message = 'Then press #. Use * to clear input'
+    LCD1602.clear()
     LCD1602.write(0, 0, "Enter code:")
     while True:
         if scrolling:
@@ -145,7 +146,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 scrolling = False
                 LCD1602.clear()
                 LCD1602.write(0, 0, "Enter code:")
-
+            continue
         key = keypad.read()
         if key:
             if key == '#':  # Assuming '#' is used to submit the code
