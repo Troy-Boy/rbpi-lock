@@ -185,6 +185,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                     )
                     status = submit_code(api, config)
                     print("status: ", status)
+                    print("YESSSS SIR ITS OPPPPPEEEEN")
+                    break
                 else:
                     LCD1602.clear()
                     LCD1602.write(0, 0, "Invalid Code")
@@ -213,8 +215,8 @@ def main() -> None:
         loop(keypad, api, boat_id=boat_id)
     except KeyboardInterrupt:
         print("Keyboard Interrupt: ", KeyboardInterrupt)
-    except:
-        print("An unknown exception occured, exiting")
+    except Exception as e:
+        print("An unknown exception occured", e)
     finally:
         destroy()
 
