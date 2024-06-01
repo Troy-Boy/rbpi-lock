@@ -122,7 +122,7 @@ def display_entered_code(code: str):
         code (str): The currently entered code.
     """
     LCD1602.clear()
-    LCD1602.write(0, 0, 'Enter code:')
+    LCD1602.write(0, 0, 'Enter your code:')
     LCD1602.write(0, 1, code)
 
 def debounce_keypad(keypad: Keypad, debounce_time: float = 0.2) -> str:
@@ -157,14 +157,15 @@ def loop(keypad: Keypad, api: API, boat_id: str):
     scrolling = True
     message = 'Then press #. Use * to clear input'
     LCD1602.clear()
-    LCD1602.write(0, 0, "Enter code:")
+    LCD1602.write(0, 0, "Enter your code:")
+    LCD1602.write(0, 1, message)
     while True:
-        if scrolling:
-            display_scrolling_message(message, 1, 0.3)
-            if keypad.read():
-                scrolling = False
-                LCD1602.clear()
-                LCD1602.write(0, 0, "Enter code:")
+        # if scrolling:
+        #     display_scrolling_message(message, 1, 0.3)
+        #     if keypad.read():
+        #         scrolling = False
+        #         LCD1602.clear()
+        #         LCD1602.write(0, 0, "Enter code:")
         
         # key = debounce_keypad(keypad)
         key = keypad.read()
