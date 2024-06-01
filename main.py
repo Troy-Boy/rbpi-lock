@@ -155,7 +155,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
     """
     entered_code = ""
     scrolling = True
-    message = 'Then press #. Use * to clear input'
+    message = '# to send, * to clear'
     LCD1602.clear()
     LCD1602.write(0, 0, "Enter your code:")
     LCD1602.write(0, 1, message)
