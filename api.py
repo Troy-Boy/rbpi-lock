@@ -41,12 +41,15 @@ class API:
         Returns:
             Optional[Dict[str, Any]]: The JSON response from the API, or None if an error occurs.
         """
+        response = None
         try:
             response = requests.post(url, json=data, headers=self.__headers)
             response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
             return response.json()
         except requests.exceptions.RequestException as e:
             print("Error:", e)
+            return response.json()
+
 
     # TODO: change function name and send config object
     def verify_access_code(self, access_code: str, boat_id: str, sent: str, sender: str, scope: str, date: str) -> Optional[Dict[str, Any]]:
