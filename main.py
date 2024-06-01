@@ -93,7 +93,6 @@ def submit_code(api: API, config: Config):
         code (str): The 6-digit access code.
     """
     result = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
-    print(result)
     if result and result.get("status") == "success":
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Granted")
@@ -196,6 +195,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 entered_code = ""
                 LCD1602.clear()
                 LCD1602.write(0, 0, "Enter your code:")
+                LCD1602.write(0, 1, message)
             else:
                 if len(entered_code) < 6:
                     entered_code += key
@@ -212,6 +212,10 @@ def main() -> None:
         setup_lcd()
         loop(keypad, api, boat_id=boat_id)
     except KeyboardInterrupt:
+        print("Keyboard Interrupt: ", KeyboardInterrupt)
+    except:
+        print("An unknown exception occured, exiting")
+    finally:
         destroy()
 
 

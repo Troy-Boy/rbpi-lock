@@ -45,7 +45,11 @@ class API:
         try:
             response = requests.post(url, json=data, headers=self.__headers)
             response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-            return response.json()
+            print(response)
+            if response.status_code == 201:
+                return response
+            else:
+                return response.json()
         except requests.exceptions.RequestException as e:
             print("Error:", e)
             return response.json()
