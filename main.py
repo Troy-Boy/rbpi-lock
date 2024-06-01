@@ -169,8 +169,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
         
         # key = debounce_keypad(keypad)
         key = keypad.read()
-        print('read key: ', key)
         if key:
+            print('read key: ', key)
             if key == '#':  # Assuming '#' is used to submit the code
                 if len(entered_code) == 6 and entered_code.isdigit():
                     config = Config(
