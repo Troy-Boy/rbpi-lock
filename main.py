@@ -125,6 +125,25 @@ def display_entered_code(code: str):
     LCD1602.write(0, 0, 'Enter code:')
     LCD1602.write(0, 1, code)
 
+def debounce_keypad(keypad: Keypad, debounce_time: float = 0.2) -> str:
+    """Debounce the keypad input.
+    
+    Args:
+        keypad (Keypad): The keypad instance.
+        debounce_time (float): The debounce time in seconds.
+    
+    Returns:
+        str: The debounced key press.
+    """
+    key = None
+    while key is None:
+        key = keypad.read()
+        if key:
+            time.sleep(debounce_time)  # Wait for debounce time
+            if key == keypad.read():  # Confirm it's the same key after debounce time
+                return key
+        time.sleep(0.01)  # Small delay to prevent high CPU usage
+
 
 def loop(keypad: Keypad, api: API, boat_id: str):
     """Loop on the keypad to read the input, then displays it on the LCD.
@@ -146,10 +165,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 scrolling = False
                 LCD1602.clear()
                 LCD1602.write(0, 0, "Enter code:")
-        key = None
-        while key is None:
-            key = keypad.read()
-            time.sleep(0.1)  # Adding a small delay to debounce key presses
+        
+        key = debounce_keypad(keypad)
 
         print('read key: ', key)
         if key:
