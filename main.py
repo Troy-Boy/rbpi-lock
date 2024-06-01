@@ -146,7 +146,11 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 scrolling = False
                 LCD1602.clear()
                 LCD1602.write(0, 0, "Enter code:")
-        key = keypad.read()
+        key = None
+        while key is None:
+            key = keypad.read()
+            time.sleep(0.1)  # Adding a small delay to debounce key presses
+
         print('read key: ', key)
         if key:
             if key == '#':  # Assuming '#' is used to submit the code
