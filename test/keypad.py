@@ -48,15 +48,15 @@ class Keypad:
         return None
 
 def main():
-    row_pins = [18, 23, 24, 25]
-    col_pins = [10, 22, 27, 17]
+    rows_pins = [5, 6, 13, 19]
+    cols_pins = [12, 16, 20, 21]
     keys = [
         "1", "2", "3", "A",
         "4", "5", "6", "B",
         "7", "8", "9", "C",
         "*", "0", "#", "D"
     ]
-    keypad = Keypad(row_pins, col_pins, keys)
+    keypad = Keypad(rows_pins, cols_pins, keys)
 
     print("Press keys on the keypad. Press Ctrl+C to exit.")
     try:

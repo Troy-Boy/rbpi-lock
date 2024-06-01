@@ -33,8 +33,8 @@ def setup_keypad() -> Keypad:
     Returns:
         Keypad: An instance of the Keypad class.
     """
-    rows_pins = [18, 23, 24, 25]  # GPIO pins for the rows of the keypad
-    cols_pins = [10, 22, 27, 17]  # GPIO pins for the columns of the keypad
+    rows_pins = [5, 6, 13, 19]  # GPIO pins for the rows of the keypad
+    cols_pins = [12, 16, 20, 21]  # GPIO pins for the columns of the keypad
     keys = [
         "1", "2", "3", "A",
         "4", "5", "6", "B",
