@@ -146,8 +146,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 scrolling = False
                 LCD1602.clear()
                 LCD1602.write(0, 0, "Enter code:")
-            continue
         key = keypad.read()
+        print('read key: ', key)
         if key:
             if key == '#':  # Assuming '#' is used to submit the code
                 if len(entered_code) == 6 and entered_code.isdigit():
