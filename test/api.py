@@ -45,6 +45,6 @@ def verify_access_code(
 if __name__ == "__main__":
     api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJwcm9kdWN0aW9uIiwic2NvcGUiOiJuYXZpZ28iLCJjbGllbnQiOjQxNywia2V5IjoiczBzYUZyN3FESkgtaVhla1JpLTdKIiwiaWF0IjoxNzE1NzUzODQyLCJleHAiOjE3NDgyMTc2MDB9.ENeAaxn41Ism61izwtoH-r-hautzwOp4D9VmTIgKULM"
     code = "666666"  # Replace with the code you want to test
-    device_id = "IGK3194003c6"  # Replace with your actual device ID
+    device_id = "IGK3194003c6dv"  # Replace with your actual device ID
 
     verify_access_code()

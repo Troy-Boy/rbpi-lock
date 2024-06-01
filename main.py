@@ -18,6 +18,7 @@ For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lancto
 
 from api import API
 from config import Config
+from datetime import datetime
 from credentials import get_api_key, get_boat_id
 from keypad import Keypad
 from typing import List
@@ -44,17 +45,34 @@ def setup_keypad() -> Keypad:
     keypad = Keypad(rows_pins, cols_pins, keys)
     return keypad
 
+
 def setup_lcd():
     """Initialize the LCD screen."""
     LCD1602.init(None, 1)  # Init(slave address, background light)
     LCD1602.clear()
-    LCD1602.write(0, 0, 'Enter 6-digit code')
-    LCD1602.write(0, 1, 'Then press #. Use * to clear input')
+
+
+def display_scrolling_message(message: str, row: int, delay: float):
+    """Display a scrolling message on the LCD screen.
+    
+    Args:
+        message (str): The message to display.
+        row (int): The row on which to display the message (0 or 1).
+        delay (float): The delay between each scroll step in seconds.
+    """
+    lcd_width = 16  # LCD width in characters
+    display = message + ' ' * lcd_width
+
+    for i in range(len(display) - lcd_width + 1):
+        LCD1602.write(0, row, display[i:i + lcd_width])
+        time.sleep(delay)
+
 
 def destroy():
     """Clean up GPIO resources."""
     LCD1602.clear()
     GPIO.cleanup()
+
 
 def get_current_time() -> str:
     """Get the current time in ISO format.
@@ -62,7 +80,10 @@ def get_current_time() -> str:
     Returns:
         str: The current time in ISO 8601 format.
     """
-    return time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime())
+    current_time = datetime.utcnow()
+    current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    return current_time
+
 
 def submit_code(api: API, config: Config):
     """Submit the access code to the API and display the result on the LCD.
@@ -72,7 +93,7 @@ def submit_code(api: API, config: Config):
         code (str): The 6-digit access code.
     """
     result = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
-    if result and result.get('status') == 'success':
+    if result and result.get("status") == "success":
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Granted")
         # Add code to unlock the door
@@ -81,16 +102,18 @@ def submit_code(api: API, config: Config):
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Denied")
 
-def clear_input() -> str:
-    """Clear the input and reset the LCD instructions.
+
+# def clear_input() -> str:
+#     """Clear the input and reset the LCD instructions.
     
-    Returns:
-        str: An empty string to reset the entered code.
-    """
-    LCD1602.clear()
-    LCD1602.write(0, 0, 'Enter 6-digit code')
-    LCD1602.write(0, 1, 'Then press #')
-    return ''
+#     Returns:
+#         str: An empty string to reset the entered code.
+#     """
+#     LCD1602.clear()
+#     LCD1602.write(0, 0, "Enter 6-digit code")
+#     LCD1602.write(0, 1, "Then press #")
+#     return ''
+
 
 def display_entered_code(code: str):
     """Display the currently entered code on the LCD.
@@ -102,11 +125,50 @@ def display_entered_code(code: str):
     LCD1602.write(0, 0, 'Enter code:')
     LCD1602.write(0, 1, code)
 
-def loop(keypad: Keypad, api: API, boat_id: str):
-    """Main loop to read keypad input and validate via API."""
-    entered_code = ''
-    while True:
+def debounce_keypad(keypad: Keypad, debounce_time: float = 0.2) -> str:
+    """Debounce the keypad input.
+    
+    Args:
+        keypad (Keypad): The keypad instance.
+        debounce_time (float): The debounce time in seconds.
+    
+    Returns:
+        str: The debounced key press.
+    """
+    key = None
+    while key is None:
         key = keypad.read()
+        if key:
+            time.sleep(debounce_time)  # Wait for debounce time
+            if key == keypad.read():  # Confirm it's the same key after debounce time
+                return key
+        time.sleep(0.01)  # Small delay to prevent high CPU usage
+
+
+def loop(keypad: Keypad, api: API, boat_id: str):
+    """Loop on the keypad to read the input, then displays it on the LCD.
+
+    Args:
+        keypad (Keypad): Keypad object
+        api (API): API object
+        boat_id (str): Boat unique identifier
+    """
+    entered_code = ""
+    scrolling = True
+    message = 'Then press #. Use * to clear input'
+    LCD1602.clear()
+    LCD1602.write(0, 0, "Enter code:")
+    while True:
+        if scrolling:
+            display_scrolling_message(message, 1, 0.3)
+            if keypad.read():
+                scrolling = False
+                LCD1602.clear()
+                LCD1602.write(0, 0, "Enter code:")
+        
+        key = debounce_keypad(keypad)
+
+        print('read key: ', key)
         if key:
             if key == '#':  # Assuming '#' is used to submit the code
                 if len(entered_code) == 6 and entered_code.isdigit():
@@ -122,10 +184,12 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 else:
                     LCD1602.clear()
                     LCD1602.write(0, 0, "Invalid Code")
-                    LCD1602.write(0, 1, "Code must be 6 digits, followed by '#'")
-                entered_code = ''  # Reset entered code
+                    scrolling = True
+                entered_code = ""  # Reset entered code
             elif key == '*':  # Assuming '*' is used to clear the input
-                entered_code = clear_input()
+                entered_code = ""
+                LCD1602.clear()
+                LCD1602.write(0, 0, "Enter code:")
             else:
                 if len(entered_code) < 6:
                     entered_code += key
