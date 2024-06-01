@@ -48,7 +48,7 @@ def save_value(value: str, section: str, name: str) -> None:
         config.write(configfile)
 
 def get_boat_id() -> str:
-    """Gets the boat id from the config.ini file
+    """Gets the boat id from the config.ini file or add it if not there.
 
     Returns:
         str: the boat id
@@ -59,6 +59,6 @@ def get_boat_id() -> str:
         return config['BOAT_IDS']['boat_id']
     except (KeyError, FileNotFoundError):
         print("No API key found in config.ini or config.ini not found.")
-        boat_id = input("Please enter your API key: ")
+        boat_id = input("Please enter your boat id: ")
         save_value(value=boat_id, section="BOAT_IDS", name="boat_id")
         return boat_id

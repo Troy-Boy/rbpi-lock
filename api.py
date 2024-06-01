@@ -48,14 +48,14 @@ class API:
         except requests.exceptions.RequestException as e:
             print("Error:", e)
 
-# TODO: change function name and send config object
-    def verify_access_code(self, access_code: str, device_id: str, sent: str, sender: str, scope: str, date: str) -> Optional[Dict[str, Any]]:
+    # TODO: change function name and send config object
+    def verify_access_code(self, access_code: str, boat_id: str, sent: str, sender: str, scope: str, date: str) -> Optional[Dict[str, Any]]:
         """
         Verify the access code with the given parameters.
 
         Args:
             access_code (str): The access code to verify.
-            device_id (str): The device ID.
+            boat_id (str): The device ID.
             sent (str): The timestamp when the request is sent.
             sender (str): The sender of the request.
             scope (str): The scope of the request.
@@ -71,7 +71,7 @@ class API:
             "scope": scope,
             "data": {
                 "code": access_code,
-                "deviceId": device_id,
+                "deviceId": boat_id,
                 "date": date
             }
         }
