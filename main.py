@@ -93,6 +93,7 @@ def submit_code(api: API, config: Config):
         code (str): The 6-digit access code.
     """
     result = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
+    print(result)
     if result and result.get("status") == "success":
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Granted")
