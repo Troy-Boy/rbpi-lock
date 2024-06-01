@@ -48,7 +48,7 @@ def setup_keypad() -> Keypad:
 
 def setup_lcd():
     """Initialize the LCD screen."""
-    LCD1602.init(0x27, 1)  # Init(slave address, background light)
+    LCD1602.init(None, 1)  # Init(slave address, background light)
     LCD1602.clear()
 
 

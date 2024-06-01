@@ -62,7 +62,6 @@ def init(addr=None, bl=1):
 
 	i2c_list = i2c_scan()
 	print(f"i2c_list: {i2c_list}")
-	print("is i2c 3f in address list", '3f' in i2c_list)
 	if addr is None:
 		if '27' in i2c_list:
 			LCD_ADDR = 0x27
