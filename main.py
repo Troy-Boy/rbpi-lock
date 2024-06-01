@@ -125,7 +125,7 @@ def display_entered_code(code: str):
     LCD1602.write(0, 0, 'Enter your code:')
     LCD1602.write(0, 1, code)
 
-def debounce_keypad(keypad: Keypad, debounce_time: float = 0.2) -> str:
+def debounce_keypad(keypad: Keypad, debounce_time: float = 0.05) -> str:
     """Debounce the keypad input.
     
     Args:
@@ -185,7 +185,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                 else:
                     LCD1602.clear()
                     LCD1602.write(0, 0, "Invalid Code")
-                    scrolling = True
+                    LCD1602.write(0,1, "Press * to clear")
+                    time.sleep(1)
                 entered_code = ""  # Reset entered code
             elif key == '*':  # Assuming '*' is used to clear the input
                 entered_code = ""
