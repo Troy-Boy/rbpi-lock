@@ -101,6 +101,8 @@ def submit_code(api: API, config: Config):
     else:
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Denied")
+        LCD1602.write(0, 1, "Press * to clear")
+    return result.get("status")
 
 
 # def clear_input() -> str:
@@ -181,7 +183,8 @@ def loop(keypad: Keypad, api: API, boat_id: str):
                         device_id=boat_id,  # Replace with your actual device ID
                         date=get_current_time()
                     )
-                    submit_code(api, config)
+                    status = submit_code(api, config)
+                    print("status: ", status)
                 else:
                     LCD1602.clear()
                     LCD1602.write(0, 0, "Invalid Code")
@@ -191,7 +194,7 @@ def loop(keypad: Keypad, api: API, boat_id: str):
             elif key == '*':  # Assuming '*' is used to clear the input
                 entered_code = ""
                 LCD1602.clear()
-                LCD1602.write(0, 0, "Enter code:")
+                LCD1602.write(0, 0, "Enter your code:")
             else:
                 if len(entered_code) < 6:
                     entered_code += key
