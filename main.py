@@ -95,7 +95,7 @@ def submit_code(api: API, config: Config) -> int:
         int: response https status.
     """
     response = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
-    if response and response.status_code == 201:
+    if response:
         LCD1602.clear()
         LCD1602.write(0, 0, "Access Granted")
     else:
