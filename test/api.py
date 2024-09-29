@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 
 def get_current_time() -> str:
     """Get the current time in ISO format.
@@ -7,7 +7,7 @@ def get_current_time() -> str:
     Returns:
         str: The current time in ISO 8601 format.
     """
-    current_time = datetime.utcnow()
+    current_time = datetime.now(timezone.utc)
     current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
     return current_time
 
