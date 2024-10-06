@@ -2,13 +2,12 @@
 
 from mfrc522 import SimpleMFRC522
 import RPi.GPIO as GPIO
-import json
 
 reader = SimpleMFRC522()
 
 def main():
     while True:
-        print(json.dumps(reader))
+        print(reader)
         text = input('Please write new data:')
         print("Please place the card to complete writing")
         reader.write(text)
