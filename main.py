@@ -29,7 +29,7 @@ import time
 
 # def setup_keypad() -> Keypad:
 #     """Instantiate the keypad with the relevant keys.
-    
+
 #     Returns:
 #         Keypad: An instance of the Keypad class.
 #     """
@@ -67,7 +67,6 @@ import time
 #         LCD1602.write(0, row, display[i:i + lcd_width])
 #         time.sleep(delay)
 
-
 def destroy():
     """Clean up GPIO resources."""
     LCD1602.clear()
@@ -104,7 +103,6 @@ def submit_code(api: API, config: Config) -> int:
         LCD1602.write(0, 1, "Press * to clear")
     return response.status_code
 
-
 # def clear_input() -> str:
 #     """Clear the input and reset the LCD instructions.
     
@@ -120,6 +118,7 @@ def submit_code(api: API, config: Config) -> int:
 # def display_entered_code(code: str):
 #     """Display the currently entered code on the LCD.
     
+
 #     Args:
 #         code (str): The currently entered code.
 #     """

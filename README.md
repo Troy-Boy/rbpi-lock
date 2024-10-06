@@ -34,6 +34,7 @@ Python script for verifying and unlocking Navigo boats lock
 
 5. Enable i2c https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/i2c_configuration.html#i2c-config
 
+
 6. Enable SPI coonfiguration https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/spi_configuration.html
 
 7. Install Spidev and MFRC522 https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/install_the_libraries.html#spidev-and-mfrc522
