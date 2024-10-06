@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 
 def get_current_time() -> str:
     """Get the current time in ISO format.
@@ -7,7 +7,7 @@ def get_current_time() -> str:
     Returns:
         str: The current time in ISO 8601 format.
     """
-    current_time = datetime.utcnow()
+    current_time = datetime.now(timezone.utc)
     current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
     return current_time
 
@@ -45,6 +45,7 @@ def verify_access_code(
 if __name__ == "__main__":
     api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJwcm9kdWN0aW9uIiwic2NvcGUiOiJuYXZpZ28iLCJjbGllbnQiOjQxNywia2V5IjoiczBzYUZyN3FESkgtaVhla1JpLTdKIiwiaWF0IjoxNzE1NzUzODQyLCJleHAiOjE3NDgyMTc2MDB9.ENeAaxn41Ism61izwtoH-r-hautzwOp4D9VmTIgKULM"
     code = "666666"  # Replace with the code you want to test
-    device_id = "IGK3194003c6"  # Replace with your actual device ID
+    device_id = "IGK3194003c6dv"  # Replace with your actual device ID
+     # device_id = "IGK3194003c6"  # Replace with your actual device ID
 
     verify_access_code()

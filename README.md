@@ -24,7 +24,7 @@ Python script for verifying and unlocking Navigo boats lock
 3. For ssh:
     1. Run powershell as administrator on your computer
     2. Ping the the rbpi's IP with `ping -4 <hostname>.local`
-    > Usually, the hostname is set to `raspberrypi`
+    	> Usually, the hostname is set to `raspberrypi`
     3. If your rbpi is connected to the same network as your computer, you will see the IP address
     4. Once the IP address is confirmed, log in to your Raspberry Pi using `ssh <username>@<hostname>.local` or `ssh <username>@<IP address>`
 
@@ -33,6 +33,11 @@ Python script for verifying and unlocking Navigo boats lock
     If you installed the OS desktop version on the rbpi, you can connect an HDMI-to-miniHDMI cable to a screen and your rpbi. You can use it same as a computer, just connect a keyboard and mouse.
 
 5. Enable i2c https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/i2c_configuration.html#i2c-config
+
+
+6. Enable SPI coonfiguration https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/spi_configuration.html
+
+7. Install Spidev and MFRC522 https://docs.sunfounder.com/projects/raphael-kit/en/latest/appendix/install_the_libraries.html#spidev-and-mfrc522
 
 6. Download the repo (private for now)
 
