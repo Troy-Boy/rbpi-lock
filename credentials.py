@@ -17,7 +17,7 @@ For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lancto
 """
 
 import configparser
-
+CONFIG_FILE = 'config.ini'
 def get_api_key() -> str:
     """Retrieve the API key from the configuration file.
     
@@ -26,7 +26,7 @@ def get_api_key() -> str:
     """
     try:
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read(CONFIG_FILE)
         return config['API_KEYS']['api_key']
     except (KeyError, FileNotFoundError):
         print("No API key found in config.ini or config.ini not found.")
@@ -44,7 +44,7 @@ def save_value(value: str, section: str, name: str) -> None:
     """
     config = configparser.ConfigParser()
     config[section] = {name: value}
-    with open('config.ini', 'w') as configfile:
+    with open(CONFIG_FILE, 'w') as configfile:
         config.write(configfile)
 
 def get_boat_id() -> str:
@@ -55,7 +55,7 @@ def get_boat_id() -> str:
     """
     try:
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read(CONFIG_FILE)
         return config['BOAT_IDS']['boat_id']
     except (KeyError, FileNotFoundError):
         print("No API key found in config.ini or config.ini not found.")

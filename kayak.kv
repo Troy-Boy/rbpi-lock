@@ -97,6 +97,36 @@ ScreenManager:
         orientation: 'vertical'
         padding: 20
         spacing: 10
+		 RelativeLayout:
+            size_hint_y: None
+            height: '80dp'
+
+            # Banner Background and Shadow
+            canvas.before:
+                Color:
+                    rgba: 1, 0.5, 0, 1  # Orange background color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                # Shadow effect
+                Color:
+                    rgba: 0, 0, 0, 0.2  # Black with transparency for shadow
+                Rectangle:
+                    pos: self.x, self.y - 5  # Slightly below the banner
+                    size: self.width, 5
+
+            # Banner Label
+            Label:
+                id: banner_label
+                text: root.get_banner_text()
+                markup: True
+                font_size: '16sp'
+                color: 1, 1, 1, 1  # White text color
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                text_size: self.width - 20, self.height - 20  # Padding inside the label
+                halign: 'left'
+                valign: 'middle'
         Label:
             text: 'Enter Reservation Code'
             font_size: '28sp'
