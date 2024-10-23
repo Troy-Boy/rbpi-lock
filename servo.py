@@ -8,8 +8,8 @@ SERVO_MAX_PULSE = 2500
 
 ServoPin = 18
 
-def map(value, input_min, input_max, output_min, output_max):
-    return (output_max - output_min) * (value - input_min) / (input_max - input_min) + output_min
+def map(value, inMin, inMax, outMin, outMax):
+    return (outMax - outMin) * (value - inMin) / (inMax - inMin) + outMin
 
 def setup():
     global p
@@ -19,7 +19,7 @@ def setup():
     p = GPIO.PWM(ServoPin, 50)     # set Frequecy to 50Hz
     p.start(0)                     # Duty Cycle = 0
     
-def set_angle(angle):      # make the servo rotate to specific angle (0-180 degrees) 
+def setAngle(angle):      # make the servo rotate to specific angle (0-180 degrees) 
     angle = max(0, min(180, angle))
     pulse_width = map(angle, 0, 180, SERVO_MIN_PULSE, SERVO_MAX_PULSE)
     pwm = map(pulse_width, 0, 20000, 0, 100)
@@ -28,12 +28,11 @@ def set_angle(angle):      # make the servo rotate to specific angle (0-180 degr
 def loop():
     while True:
         for i in range(0, 181, 5):   #make servo rotate from 0 to 180 deg
-            print('logging')
-            set_angle(i)     # Write to servo
+            setAngle(i)     # Write to servo
             time.sleep(0.002)
         time.sleep(1)
         for i in range(180, -1, -5): #make servo rotate from 180 to 0 deg
-            set_angle(i)
+            setAngle(i)
             time.sleep(0.001)
         time.sleep(1)
 
