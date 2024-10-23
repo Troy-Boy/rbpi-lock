@@ -13,10 +13,6 @@ class KayakApp(App):
 		self.api = api
 		self.boat_id = boat_id
 
-
-	def build(self):
-		return Builder.load_file('kayak.kv')
-
 # Define your screens
 class WelcomeScreen(Screen):
 	pass
@@ -85,34 +81,36 @@ class CodeEntryScreen(Screen):
 
 	def submit_code(self):
 		if self.code:
-			self.manager.current = 'processing'
 			threading.Thread(target=self.validate_code).start()
 		else:
 			self.ids.error_message.text = 'Please enter your reservation code.'
 
 	def validate_code(self):
 		# Replace with your actual API endpoint and parameters
-		payload = {
-			'locker_number': self.locker_number,
-			'code': self.code
-		}
-		try:
-			# response = api.verify_access_code(self.code, self.boat_id, json=payload)
-			# result = response.json()
-			print(self.api)
-			if self.api:
-				# Unlock the locker
-				self.unlock_locker()
-				self.manager.get_screen('result').ids.result_message.text = 'Locker unlocked successfully!'
-			else:
-				self.manager.get_screen('result').ids.result_message.text = 'Invalid code or locker number.'
-			self.update_debug_logs("API call successful: DONE !")
-		except Exception as e:
-			print(e)
-			self.manager.get_screen('result').ids.result_message.text = 'Network error. Please try again.'
-			self.update_debug_logs(f"API call failed: {e}")
-		finally:
-			self.manager.current = 'result'
+		if self.code:
+			payload = {
+				'locker_number': self.locker_number,
+				'code': self.code
+			}
+			try:
+				# response = api.verify_access_code(self.code, self.boat_id, json=payload)
+				# result = response.json()
+				print(self.api)
+				if self.api:
+					# Unlock the locker
+					self.unlock_locker()
+					self.manager.get_screen('result').ids.result_message.text = 'Locker unlocked successfully!'
+				else:
+					self.manager.get_screen('result').ids.result_message.text = 'Invalid code or locker number.'
+				self.update_debug_logs("API call successful: DONE !")
+			except Exception as e:
+				print(e)
+				self.manager.get_screen('result').ids.result_message.text = 'Network error. Please try again.'
+				self.update_debug_logs(f"API call failed: {e}")
+			finally:
+				self.manager.current = 'result'
+		else:
+			self.ids.error_message.text = 'Please enter your reservation code.'
 
 	def unlock_locker(self):
 		# Implement GPIO control to unlock the locker
@@ -127,7 +125,10 @@ class CodeEntryScreen(Screen):
 		Clock.schedule_once(lambda dt: setattr(self.ids.banner_label, 'text', self.get_banner_text()))
 
 	def get_banner_text(self):
-		return f"Boat ID: {self.boat_id} | Locker: {self.locker_number} | Time: {self.utc_time}\n{self.debug_logs}"
+		return (
+			f"[b]Boat ID:[/b] {self.boat_id}    [b]Locker:[/b] {self.locker_number}    [b]Time:[/b] {self.utc_time}\n"
+			f"{self.debug_logs}"
+		)
 
 class ProcessingScreen(Screen):
 	pass
