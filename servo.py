@@ -28,6 +28,7 @@ def set_angle(angle):      # make the servo rotate to specific angle (0-180 degr
 def loop():
     while True:
         for i in range(0, 181, 5):   #make servo rotate from 0 to 180 deg
+            print('logging')
             set_angle(i)     # Write to servo
             time.sleep(0.002)
         time.sleep(1)
