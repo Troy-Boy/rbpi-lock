@@ -84,19 +84,18 @@ class CodeEntryScreen(Screen):
 		retry_button = result_screen.ids.retry_button
 
 		if response["success"]:
-			self.unlock_locker()
 			result_label.text = "Access Granted! Locker Unlocked."
 			result_label.color = (0, 1, 0, 1)  # Green text
 			retry_button.opacity = 0  # Hide retry button
 			retry_button.disabled = True
 		else:
-			self.unlock_locker()
 			error_message = response.get("error", "Unknown error occurred.")
 			result_label.text = f"❌ Access Denied! {error_message}"
 			result_label.color = (1, 0, 0, 1)  # Red text
 			retry_button.opacity = 1  # Show retry button
 			retry_button.disabled = False
 
+		self.unlock_locker()
 		self.manager.current = "result"  # Switch to result screen
 
 	def get_current_utc_time(self):
@@ -129,7 +128,7 @@ class CodeEntryScreen(Screen):
 		self.ids.banner_label.text = self.get_banner_text()
 
 	def unlock_locker(self):
-		servo.setAngle(180)
+		servo.unlock_locker()
 
 	def update_debug_logs(self, log_message):
 		# Update the debug logs and refresh the banner

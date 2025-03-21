@@ -5,48 +5,47 @@ import time
 
 SERVO_MIN_PULSE = 500
 SERVO_MAX_PULSE = 2500
+SERVO_PIN = 18
 
-ServoPin = 18
+p = None  # PWM object will be initialized in setup()
 
 def map(value, inMin, inMax, outMin, outMax):
     return (outMax - outMin) * (value - inMin) / (inMax - inMin) + outMin
 
 def setup():
-    print("setup start()")
     global p
-    GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by BCM
-    GPIO.setup(ServoPin, GPIO.OUT)   # Set ServoPin's mode is output
-    GPIO.output(ServoPin, GPIO.LOW)  # Set ServoPin to low
-    p = GPIO.PWM(ServoPin, 50)     # set Frequecy to 50Hz
-    p.start(0)                     # Duty Cycle = 0
-    print("setup end()")
-    
-def setAngle(angle):      # make the servo rotate to specific angle (0-180 degrees) 
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(SERVO_PIN, GPIO.OUT)
+    p = GPIO.PWM(SERVO_PIN, 50)  # 50Hz
+    p.start(0)
+    time.sleep(0.5)  # Give the servo time to initialize
+
+def set_angle(angle):
     angle = max(0, min(180, angle))
     pulse_width = map(angle, 0, 180, SERVO_MIN_PULSE, SERVO_MAX_PULSE)
-    pwm = map(pulse_width, 0, 20000, 0, 100)
-    p.ChangeDutyCycle(pwm)#map the angle to duty cycle and output it
-    
-def loop():
-    print("loop start()")
-    while True:
-        for i in range(0, 181, 5):   #make servo rotate from 0 to 180 deg
-            setAngle(i)     # Write to servo
-            time.sleep(0.002)
+    duty_cycle = map(pulse_width, 0, 20000, 0, 100)
+    p.ChangeDutyCycle(duty_cycle)
+    time.sleep(0.5)  # Let the servo reach the position
+    p.ChangeDutyCycle(0)  # Stop sending signal to avoid buzzing
+
+def unlock_locker():
+    try:
+        setup()
+        print("🔓 Unlocking locker (180°)...")
+        set_angle(180)  # Move to unlock position
         time.sleep(1)
-        for i in range(180, -1, -5): #make servo rotate from 180 to 0 deg
-            setAngle(i)
-            time.sleep(0.001)
-        time.sleep(1)
+
+        # Optional: Reset to locked position after a delay
+        # print("Locking again (0°)...")
+        # set_angle(0)
+        # time.sleep(1)
+    finally:
+        destroy()
 
 def destroy():
-    p.stop()
+    if p:
+        p.stop()
     GPIO.cleanup()
 
-if __name__ == '__main__':     #Program start from here
-    print("startin here")
-    setup()
-    try:
-        loop()
-    except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the program destroy() will be executed.
-        destroy()
+if __name__ == '__main__':
+    unlock_locker()

@@ -47,7 +47,7 @@ def main() -> None:
 	try:
 		api_key = get_api_key()
 		boat_id = get_boat_id()
-		set_up()
+		# set_up()
 		print("API key: ", api_key)
 		print("Boat ID: ", boat_id)
 		api = API(api_key)
