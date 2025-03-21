@@ -22,6 +22,7 @@ from credentials import get_api_key, get_boat_id
 # import RPi.GPIO as GPIO
 from kayak import KayakApp
 from api import API
+# import servo as servo
 
 def destroy():
     """Clean up GPIO resources."""
@@ -39,25 +40,9 @@ def get_current_time() -> str:
     current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
     return current_time
 
+# def set_up():
+#     servo.setup()
 
-# def submit_code(api: API, config: Config) -> int:
-#     """Submit the access code to the API and display the result on the LCD.
-    
-#     Args:
-#         api (API): The API instance.
-#         code (str): The 6-digit access code.
-#     Returns:
-#         int: response https status.
-#     """
-#     response = api.verify_access_code(config.code, config.device_id, config.sent, config.sender, config.scope, config.date)
-#     if response:
-#         LCD1602.clear()
-#         LCD1602.write(0, 0, "Access Granted")
-#     else:
-#         LCD1602.clear()
-#         LCD1602.write(0, 0, "Access Denied")
-#         LCD1602.write(0, 1, "Press * to clear")
-#     return response.status_code
 
 def main() -> None:
     try:

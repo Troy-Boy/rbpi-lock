@@ -8,10 +8,24 @@ from datetime import datetime, timezone
 from api import API
 
 class KayakApp(App):
-	def __init__(self, api, boat_id, **kwargs):
+	def __init__(self, api: API, boat_id: str, **kwargs):
 		super(KayakApp, self).__init__(**kwargs)
 		self.api = api
 		self.boat_id = boat_id
+
+	def build(self):
+		sm = ScreenManager()
+		sm.add_widget(WelcomeScreen(name="welcome"))
+		sm.add_widget(LockerNumberScreen(name="locker_number"))
+
+		# ✅ Manually add CodeEntryScreen with API and Boat ID
+		sm.add_widget(CodeEntryScreen(api=self.api, boat_id=self.boat_id, name="code_entry"))
+
+		sm.add_widget(ProcessingScreen(name="processing"))
+		sm.add_widget(ResultScreen(name="result"))
+
+		return sm
+
 
 # Define your screens
 class WelcomeScreen(Screen):
@@ -41,14 +55,51 @@ class LockerNumberScreen(Screen):
 			self.ids.error_message.text = 'Please enter a locker number.'
 
 class CodeEntryScreen(Screen):
-	def __init__(self, **kwargs):
+	def __init__(self, api: API, boat_id: str, **kwargs):
 		super().__init__(**kwargs)
-		self.api = App.get_running_app().api
-		self.boat_id = App.get_running_app().boat_id
+		self.api = api
+		self.boat_id = boat_id
 		self.code = ''
 		self.locker_number = ''
 		self.utc_time = self.get_current_utc_time()
 		self.debug_logs = ''
+
+	def validate_code(self):
+		"""Handles the reservation code validation process."""
+		if not self.code:
+			self.ids.error_message.text = "Please enter your reservation code."
+			return
+
+		self.manager.current = "processing"  # Switch to Processing Screen
+
+		# Simulate API call delay
+		Clock.schedule_once(lambda dt: self.check_api_response(), 1)
+
+	def check_api_response(self):
+		"""Performs the API call and updates UI based on the response."""
+		response = self.api.verify_access_code(self.code, self.boat_id)
+		print(self.code, self.locker_number)
+		result_screen = self.manager.get_screen("result")  # Get ResultScreen
+
+		# Access UI elements from `.kv` file and update them
+		result_label = result_screen.ids.result_label
+		retry_button = result_screen.ids.retry_button
+
+		if response["success"]:
+			self.unlock_locker()
+			result_label.text = "Access Granted! Locker Unlocked."
+			result_label.color = (0, 1, 0, 1)  # Green text
+			retry_button.opacity = 0  # Hide retry button
+			retry_button.disabled = True
+		else:
+			self.unlock_locker()
+			error_message = response.get("error", "Unknown error occurred.")
+			result_label.text = f"❌ Access Denied! {error_message}"
+			result_label.color = (1, 0, 0, 1)  # Red text
+			retry_button.opacity = 1  # Show retry button
+			retry_button.disabled = False
+
+		self.manager.current = "result"  # Switch to result screen
 
 	def get_current_utc_time(self):
 		"""Get the current UTC time as a formatted string."""
@@ -78,39 +129,6 @@ class CodeEntryScreen(Screen):
 	def update_time(self, dt):
 		self.utc_time = self.get_current_utc_time()
 		self.ids.banner_label.text = self.get_banner_text()
-
-	def submit_code(self):
-		if self.code:
-			threading.Thread(target=self.validate_code).start()
-		else:
-			self.ids.error_message.text = 'Please enter your reservation code.'
-
-	def validate_code(self):
-		# Replace with your actual API endpoint and parameters
-		if self.code:
-			payload = {
-				'locker_number': self.locker_number,
-				'code': self.code
-			}
-			try:
-				# response = api.verify_access_code(self.code, self.boat_id, json=payload)
-				# result = response.json()
-				print(self.api)
-				if self.api:
-					# Unlock the locker
-					self.unlock_locker()
-					self.manager.get_screen('result').ids.result_message.text = 'Locker unlocked successfully!'
-				else:
-					self.manager.get_screen('result').ids.result_message.text = 'Invalid code or locker number.'
-				self.update_debug_logs("API call successful: DONE !")
-			except Exception as e:
-				print(e)
-				self.manager.get_screen('result').ids.result_message.text = 'Network error. Please try again.'
-				self.update_debug_logs(f"API call failed: {e}")
-			finally:
-				self.manager.current = 'result'
-		else:
-			self.ids.error_message.text = 'Please enter your reservation code.'
 
 	def unlock_locker(self):
 		# Implement GPIO control to unlock the locker

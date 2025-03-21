@@ -4,7 +4,6 @@ ScreenManager:
 	transition: FadeTransition()
 	WelcomeScreen:
 	LockerNumberScreen:
-	CodeEntryScreen:
 	ProcessingScreen:
 	ResultScreen:
 
@@ -93,6 +92,10 @@ ScreenManager:
 	name: 'code_entry'
 	code: ''
 	locker_number: ''
+	boat_id: ''
+	api: None
+	utc_time: ''
+	debug_logs: ''
 	BoxLayout:
 		orientation: 'vertical'
 		spacing: 0
@@ -117,17 +120,17 @@ ScreenManager:
 				text_size: self.width - 20, None
 				halign: 'left'
 				valign: 'middle'
-			Label:
-				id: banner_label
-				text: root.get_banner_text()
-				markup: True
-				font_size: '16sp'
-				color: 1, 1, 1, 1
-				size_hint: 1, 1
-				pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-				text_size: self.width - 20, None
-				halign: 'right'
-				valign: 'top'
+			# Label:
+ 			# 	id: banner_label
+			# 	text: root.get_banner_text()
+			# 	markup: True
+			# 	font_size: '16sp'
+			# 	color: 1, 1, 1, 1
+			# 	size_hint: 1, 1
+			# 	pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			# 	text_size: self.width - 20, None
+			# 	halign: 'right'
+			# 	valign: 'top'
 
 		# Rest of your layout
 		Label:
@@ -209,17 +212,34 @@ ScreenManager:
 			value: 0.5  # Placeholder for animation
 
 <ResultScreen>:
-	name: 'result'
+	name: "result"
 	BoxLayout:
-		orientation: 'vertical'
+		orientation: "vertical"
 		padding: 50
 		spacing: 20
+
 		Label:
-			id: result_message
-			text: ''
-			font_size: '28sp'
+			id: result_label  # Dynamic success/error message
+			text: "Processing..."
+			font_size: "28sp"
+			halign: "center"
+			valign: "middle"
+			text_size: self.width, None  # Ensures text wraps properly
+
 		Button:
-			text: 'Finish'
-			font_size: '24sp'
-			on_press:
-				root.manager.current = 'welcome'
+			id: retry_button
+			text: "Retry"
+			font_size: "24sp"
+			size_hint_y: None
+			height: "60dp"
+			on_press: root.manager.current = "locker_number"  # Go back to code entry screen
+			opacity: 0  # Initially hidden
+			disabled: True
+
+		Button:
+			text: "Finish"
+			font_size: "24sp"
+			size_hint_y: None
+			height: "60dp"
+			on_press: root.manager.current = "welcome"  # Go back to home screen
+
