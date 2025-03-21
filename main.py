@@ -19,7 +19,7 @@ For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lancto
 from config import Config
 from datetime import datetime, timezone
 from credentials import get_api_key, get_boat_id
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from kayak import KayakApp
 from api import API
 import servo as servo
@@ -27,6 +27,7 @@ import servo as servo
 def destroy():
 	"""Clean up GPIO resources."""
 	servo.destroy()
+	GPIO.cleanup()
 
 
 def get_current_time() -> str:
