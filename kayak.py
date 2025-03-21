@@ -1,10 +1,12 @@
 from kivy.app import App
+from kivy.config import Config
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 from datetime import datetime, timezone
 from api import API
 import servo
 
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 class KayakApp(App):
 	def __init__(self, api: API, boat_id: str, **kwargs):
 		super(KayakApp, self).__init__(**kwargs)
