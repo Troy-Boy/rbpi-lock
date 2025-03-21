@@ -221,7 +221,7 @@ ScreenManager:
 			font_size: "24sp"
 			size_hint_y: None
 			height: "60dp"
-			on_press: root.reset()  # Go back to locker number screen and clear code
+			on_press: root.manager.current = "locker_number"  # Go back to locker number screen and clear code
 			opacity: 0  # Initially hidden
 			disabled: True
 
