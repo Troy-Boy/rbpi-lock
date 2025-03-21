@@ -1,11 +1,9 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
-from kivy.lang import Builder
-import requests
-import threading
 from datetime import datetime, timezone
 from api import API
+import servo
 
 class KayakApp(App):
 	def __init__(self, api: API, boat_id: str, **kwargs):
@@ -18,7 +16,7 @@ class KayakApp(App):
 		sm.add_widget(WelcomeScreen(name="welcome"))
 		sm.add_widget(LockerNumberScreen(name="locker_number"))
 
-		# ✅ Manually add CodeEntryScreen with API and Boat ID
+		# Manually add CodeEntryScreen with API and Boat ID
 		sm.add_widget(CodeEntryScreen(api=self.api, boat_id=self.boat_id, name="code_entry"))
 
 		sm.add_widget(ProcessingScreen(name="processing"))
@@ -114,7 +112,7 @@ class CodeEntryScreen(Screen):
 		self.ids.code_input.text = ''
 
 	def on_pre_enter(self):
-	# Update the banner when the screen is about to be displayed
+		# Update the banner when the screen is about to be displayed
 		self.utc_time = self.get_current_utc_time()
 		self.ids.banner_label.text = self.get_banner_text()
 
@@ -131,8 +129,7 @@ class CodeEntryScreen(Screen):
 		self.ids.banner_label.text = self.get_banner_text()
 
 	def unlock_locker(self):
-		# Implement GPIO control to unlock the locker
-		pass
+		servo.setAngle(180)
 
 	def update_debug_logs(self, log_message):
 		# Update the debug logs and refresh the banner

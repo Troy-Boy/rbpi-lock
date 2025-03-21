@@ -120,17 +120,6 @@ ScreenManager:
 				text_size: self.width - 20, None
 				halign: 'left'
 				valign: 'middle'
-			# Label:
- 			# 	id: banner_label
-			# 	text: root.get_banner_text()
-			# 	markup: True
-			# 	font_size: '16sp'
-			# 	color: 1, 1, 1, 1
-			# 	size_hint: 1, 1
-			# 	pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-			# 	text_size: self.width - 20, None
-			# 	halign: 'right'
-			# 	valign: 'top'
 
 		# Rest of your layout
 		Label:
@@ -232,7 +221,7 @@ ScreenManager:
 			font_size: "24sp"
 			size_hint_y: None
 			height: "60dp"
-			on_press: root.manager.current = "locker_number"  # Go back to code entry screen
+			on_press: root.reset()  # Go back to locker number screen and clear code
 			opacity: 0  # Initially hidden
 			disabled: True
 

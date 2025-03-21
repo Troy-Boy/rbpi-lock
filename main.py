@@ -22,44 +22,44 @@ from credentials import get_api_key, get_boat_id
 # import RPi.GPIO as GPIO
 from kayak import KayakApp
 from api import API
-# import servo as servo
+import servo as servo
 
 def destroy():
-    """Clean up GPIO resources."""
-    # LCD1602.clear()
-    # GPIO.cleanup()
+	"""Clean up GPIO resources."""
+	servo.destroy()
 
 
 def get_current_time() -> str:
-    """Get the current time in ISO format.
-    
-    Returns:
-        str: The current time in ISO 8601 format.
-    """
-    current_time = datetime.now(timezone.utc)
-    current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
-    return current_time
+	"""Get the current time in ISO format.
+	
+	Returns:
+		str: The current time in ISO 8601 format.
+	"""
+	current_time = datetime.now(timezone.utc)
+	current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+	return current_time
 
-# def set_up():
-#     servo.setup()
+def set_up():
+	servo.setup()
 
 
 def main() -> None:
-    try:
-        api_key = get_api_key()
-        boat_id = get_boat_id()
-        print("API key: ", api_key)
-        print("Boat ID: ", boat_id)
-        api = API(api_key)
-        app = KayakApp(api, boat_id)
-        app.run()
-    except KeyboardInterrupt:
-        print("Keyboard Interrupt: ", KeyboardInterrupt)
-    except Exception as e:
-        print("An unknown exception occured", e)
-    finally:
-        destroy()
+	try:
+		api_key = get_api_key()
+		boat_id = get_boat_id()
+		set_up()
+		print("API key: ", api_key)
+		print("Boat ID: ", boat_id)
+		api = API(api_key)
+		app = KayakApp(api, boat_id)
+		app.run()
+	except KeyboardInterrupt:
+		print("Keyboard Interrupt: ", KeyboardInterrupt)
+	except Exception as e:
+		print("An unknown exception occured", e)
+	finally:
+		destroy()
 
 
 if __name__ == "__main__":
-    main()
+	main()
