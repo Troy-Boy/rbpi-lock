@@ -15,11 +15,21 @@ Dependencies:
 
 For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lanctots@gmail.com.
 """
+from kivy.config import Config
 
-from config import Config
-from datetime import datetime, timezone
+# Prevent double input (touch + mouse)
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
+
+# Set window size if you're not running fullscreen
+Config.set('graphics', 'width', '800')
+Config.set('graphics', 'height', '480')
+Config.set('graphics', 'fullscreen', '1')  # or 0 if you want windowed
+
+# Optional: Better font scaling for touch
+Config.set('graphics', 'dpi', '160')
+
 from credentials import get_api_key, get_boat_id
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from kayak import KayakApp
 from api import API
 import servo as servo
@@ -27,21 +37,10 @@ import servo as servo
 def destroy():
 	"""Clean up GPIO resources."""
 	servo.destroy()
-
-
-def get_current_time() -> str:
-	"""Get the current time in ISO format.
-	
-	Returns:
-		str: The current time in ISO 8601 format.
-	"""
-	current_time = datetime.now(timezone.utc)
-	current_time = current_time.strftime("%Y-%m-%dT%H:%M:%S.000Z")
-	return current_time
+	GPIO.cleanup()
 
 def set_up():
 	servo.setup()
-
 
 def main() -> None:
 	try:
