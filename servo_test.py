@@ -29,7 +29,7 @@ def main():
         set_angle(pwm, 0)
         time.sleep(1)
 
-        print("🔓 Rotating to 180°")
+        print("Rotating to 180°")
         set_angle(pwm, 180)
         time.sleep(1)
 
