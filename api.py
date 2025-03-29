@@ -17,7 +17,7 @@ For questions or assistance, contact Achilles Lanctôt-Saumure at achille.lancto
 """
 
 import requests
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 from datetime import datetime, timezone
 
 class API:
