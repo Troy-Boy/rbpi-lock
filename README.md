@@ -44,6 +44,22 @@ Python script for verifying and unlocking Navigo boats lock
 
 7. Enable run on boot for the script #TODO: that
 
+## Setup Kivy to register the touch and mouse events not as 2 events
+On the Pi, once the package are installed, you'll need to update the kivy configuration for using the raspberryPi touchscreen:
+1. `nano ~/.kivy/config.ini`
+2. Scroll in the `[input]` section and add what is missing/comment the `mtdev_%(name)s = probesysfs,provider=mtdev `:
+
+```
+[input]
+%(name)s = probesysfs,provider=hidinput
+mouse = mouse
+# mtdev_%(name)s = probesysfs,provider=mtdev 
+hid_%(name)s = probesysfs,provider=hidinput
+```
+
+More info here: 
+* [SO thread](https://stackoverflow.com/questions/59963631/python-kivy-on-press-being-executed-twice)
+* [Kivy rpbi doc](https://kivy.org/doc/stable/installation/installation-rpi.html#using-official-rpi-touch-display)
 
 # Setup SixFab base hat
 
@@ -60,6 +76,11 @@ Python script for verifying and unlocking Navigo boats lock
 # Troubleshooting
 Here are the most common errors encountered in the project:
 
+2. SixFab base hat is not as intuitive as one would expect. You might need to change internet connection priority to be on the SIM card first, WIFI second.
+
+3. Make sure the SixFab connects to the LTE on boot.
+
+### Legacy
 1. The LCD screen use either address 0x27 or 0x3f. If, by unknown reason, it uses another one, change the script in LCD1602.py at `init(addr=None, bl=1)` for:
 
 ```python
@@ -80,7 +101,3 @@ def init(addr=None, bl=1):
 			# raise IOError("I2C address 0x27 or 0x3f no found.")
 			LCD_ADDR = 0x3f
 ```
-
-2. SixFab base hat is not as intuitive as one would expect. You might need to change internet connection priority to be on the SIM card first, WIFI second.
-
-3. Make sure the SixFab connects to the LTE on boot.
