@@ -31,14 +31,14 @@ def set_angle(angle):
 def unlock_locker():
     try:
         setup()
-        print("🔓 Unlocking locker (180°)...")
+        print("Unlocking locker (180°)...")
         set_angle(180)  # Move to unlock position
         time.sleep(1)
 
         # Optional: Reset to locked position after a delay
-        # print("Locking again (0°)...")
-        # set_angle(0)
-        # time.sleep(1)
+        print("Locking again (0°)...")
+        set_angle(0)
+        time.sleep(1)
     finally:
         destroy()
 
