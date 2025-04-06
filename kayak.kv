@@ -43,7 +43,8 @@ ScreenManager:
 			readonly: True
 		GridLayout:
 			cols: 3
-			spacing: 5
+			spacing: [20, 20]  # Increase spacing
+			padding: [10, 10]
 			size_hint_y: None
 			height: '300dp'
 			Button:
@@ -138,7 +139,8 @@ ScreenManager:
 
 		GridLayout:
 			cols: 3
-			spacing: 5
+			spacing: [20, 20]  # Increase spacing
+			padding: [10, 10]
 			size_hint_y: None
 			height: '300dp'
 			Button:
@@ -232,3 +234,17 @@ ScreenManager:
 			height: "60dp"
 			on_press: root.manager.current = "welcome"  # Go back to home screen
 
+
+<Button@Button>:
+    size_hint: None, None
+    size: 80, 80
+    font_size: "28sp"
+    background_normal: ""
+    background_down: ""
+    canvas.before:
+        Color:
+            rgba: 1, 0.5, 0, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [40,]
