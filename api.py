@@ -50,7 +50,7 @@ class API:
 				"success": response.ok,  # True if 2XX, False otherwise
 				"status_code": response.status_code
 			}
-
+			print("Response", result)
 			# Try to parse JSON, otherwise return raw response
 			try:
 				result["data"] = response.json()

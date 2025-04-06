@@ -29,18 +29,21 @@ Config.set('graphics', 'fullscreen', '1')  # or 0 if you want windowed
 Config.set('graphics', 'dpi', '160')
 
 from credentials import get_api_key, get_boat_id
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 from kayak import KayakApp
 from api import API
-import servo as servo
+# import servo as servo
 
 def destroy():
 	"""Clean up GPIO resources."""
-	servo.destroy()
-	GPIO.cleanup()
+
+	print("cleaning up...")
+	# servo.destroy()
+	# GPIO.cleanup()
 
 def set_up():
-	servo.setup()
+	print("Setting up...")
+	# servo.setup()
 
 def main() -> None:
 	try:

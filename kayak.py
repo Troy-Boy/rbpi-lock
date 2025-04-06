@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 from datetime import datetime, timezone
 from api import API
-import servo
+# import servo
 
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 class KayakApp(App):
@@ -130,7 +130,8 @@ class CodeEntryScreen(Screen):
 		self.ids.banner_label.text = self.get_banner_text()
 
 	def unlock_locker(self):
-		servo.unlock_locker()
+		print("Unlocking")
+		# servo.unlock_locker()
 
 	def update_debug_logs(self, log_message):
 		# Update the debug logs and refresh the banner
